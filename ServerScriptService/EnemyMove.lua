@@ -1,5 +1,6 @@
 -- @ScriptType: Script
 local waypoints = workspace:WaitForChild("Waypoints")
+local enemiesFolder = workspace:WaitForChild("Enemies")
 
 local function moveEnemy(enemy)
 	local humanoid = enemy:WaitForChild("Humanoid")
@@ -14,5 +15,5 @@ local function moveEnemy(enemy)
 end
 
 -- TEMPORARY TEST: finds the model named "Enemy" in Workspace
-local enemy = workspace:WaitForChild("Enemy")
+local enemy = enemiesFolder:WaitForChild("Enemy")
 moveEnemy(enemy)
