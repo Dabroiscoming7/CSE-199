@@ -62,4 +62,6 @@ local function placeTestTower()
 	task.spawn(runTower, tower)
 end
 
-placeTestTower()
+towersFolder.ChildAdded:Connect(function(tower)
+	task.spawn(runTower, tower)
+end)
