@@ -48,20 +48,6 @@ local function runTower(tower)
 	end
 end
 
-local function placeTestTower()
-	local template = towerTemplates:FindFirstChild("BasicTower")
-	if not template then
-		warn("BasicTower template not found in ReplicatedStorage")
-		return
-	end
-	
-	local tower = template:Clone()
-	tower.Parent = towersFolder
-	tower:PivotTo(CFrame.new(0, 12, 0))
-	
-	task.spawn(runTower, tower)
-end
-
 towersFolder.ChildAdded:Connect(function(tower)
 	task.spawn(runTower, tower)
 end)
