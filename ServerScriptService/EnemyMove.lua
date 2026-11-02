@@ -17,8 +17,14 @@ local function moveEnemy(enemy)
 		end
 		
 		local waypoint = waypoints:WaitForChild(tostring(i))
+		local root = enemy:WaitForChild("HumanoidRootPart")
+		
 		humanoid:MoveTo(waypoint.Position)
-		humanoid.MoveToFinished:Wait()
+		while enemy.Parent and humanoid.Health > 0
+			and (Vector3.new(root.Position.X, 0, root.Position.Z)
+				- Vector3.new(waypoint.Position.X, 0, waypoint.Position.Z)).Magnitude > 2 do
+			task.wait()
+		end
 	end
 	
 	if enemy.Parent then
