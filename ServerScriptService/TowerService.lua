@@ -31,6 +31,12 @@ local function getClosestEnemy(tower, range)
 end
 
 local function runTower(tower)
+	-- Shows Error Message if Tower has no PrimaryPart
+	if not tower.PrimaryPart then
+		warn(tower.Name .. " has no PrimaryPart set")
+		return
+	end
+	
 	local config = tower:WaitForChild("Configuration")
 	local range = config:WaitForChild("Range")
 	local damage = config:WaitForChild("Damage")
