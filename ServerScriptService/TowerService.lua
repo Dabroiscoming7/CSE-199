@@ -30,6 +30,15 @@ local function getClosestEnemy(tower, range)
 	return closestEnemy
 end
 
+local function faceTarget(tower, target)
+	local root = target:FindFirstChild("HumanoidRootPart")
+	if not root then return end
+	
+	local pos = tower:GetPivot().Position
+	local lookAt = Vector3.new(root.Position.X, pos.Y, root.Position.Z)
+	tower:PivotTo(CFrame.lookAt(pos, lookAt) * CFrame.Angles(0, math.rad(-90), 0))
+end
+
 local function runTower(tower)
 	-- Shows Error Message if Tower has no PrimaryPart
 	if not tower.PrimaryPart then
@@ -45,6 +54,8 @@ local function runTower(tower)
 	while tower.Parent do
 		local target = getClosestEnemy(tower, range.Value)
 		if target then
+			faceTarget(tower, target)
+			
 			local humanoid = target:FindFirstChildOfClass("Humanoid")
 			if humanoid and humanoid.Health > 0 then
 				humanoid:TakeDamage(damage.Value)
