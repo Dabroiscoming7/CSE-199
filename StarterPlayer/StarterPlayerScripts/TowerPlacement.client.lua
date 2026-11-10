@@ -20,6 +20,16 @@ local ghost = nil
 local heightOffset = 0
 local lastPosition = nil
 
+local function clearSelection()
+	if ghost then
+		ghost:Destroy()
+	end
+	ghost = nil
+	selectedName = nil
+	lastPosition = nil
+	mouse.TargetFilter = nil
+end
+
 local function selectTower(name)
 	local template = towerTemplates:FindFirstChild(name)
 	if not template then
@@ -27,9 +37,7 @@ local function selectTower(name)
 		return
 	end
 	
-	if ghost then
-		ghost:Destroy()
-	end
+	clearSelection()
 	
 	selectedName = name
 	ghost = template:Clone()
@@ -43,10 +51,10 @@ local function selectTower(name)
 	end
 	ghost.Parent = workspace
 	mouse.TargetFilter = ghost
-	heightOffset = ghost:GetExtentsSize().Y / 2
+	local boxCFrame, boxSize = ghost:GetBoundingBox()
+	local bottomY = boxCFrame.Position.Y - boxSize.Y / 2
+	heightOffset = ghost:GetPivot().Position.Y - bottomY
 end
-
-selectTower("BasicTower")
 
 RunService.RenderStepped:Connect(function()
 	if ghost and mouse.Hit then
@@ -60,12 +68,21 @@ UserInputService.InputBegan:Connect(function(input, processed)
 	
 	local hotkeyTower = hotkeys[input.KeyCode]
 	if hotkeyTower then
-		selectTower(hotkeyTower)
+		if selectedName == hotkeyTower then
+			clearSelection()
+		else
+			selectTower(hotkeyTower)
+		end
+		return
+	end
+	
+	if input.KeyCode == Enum.KeyCode.Q or input.UserInputType == Enum.UserInputType.MouseButton2 then
+		clearSelection()
 		return
 	end
 	
 	if input.UserInputType == Enum.UserInputType.MouseButton1 and selectedName and lastPosition then
 		requestPlaceTower:FireServer(selectedName, lastPosition)
+		clearSelection()
 	end
 end)
-
