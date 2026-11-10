@@ -9,7 +9,7 @@ local placedFolder = workspace:FindFirstChild("PlacedTowers") or Instance.new("F
 placedFolder.Name = "PlacedTowers"
 placedFolder.Parent = workspace
 
-local MIN_TOWER_SPACING = 4 -- studs between towers
+local MIN_TOWER_SPACING = 3 -- studs between towers
 local MIN_PATH_DISTANCE = 2 -- studs from waypoints(Will be changed)
 local MAX_PLACE_RANGE = 200 -- max studs from the player
 
