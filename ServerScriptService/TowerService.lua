@@ -1,6 +1,7 @@
 -- @ScriptType: Script
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
+local Players = game:GetService("Players")
 
 local towersFolder = Workspace:FindFirstChild("PlacedTowers") or Instance.new("Folder")
 towersFolder.Name = "PlacedTowers"
@@ -58,10 +59,26 @@ local function runTower(tower)
 			
 			local humanoid = target:FindFirstChildOfClass("Humanoid")
 			if humanoid and humanoid.Health > 0 then
+				local healthBefore = humanoid.Health
 				humanoid:TakeDamage(damage.Value)
+				local healthLost = math.max(0, healthBefore - humanoid.Health)
+				
+				if healthLost > 0 then
+					for _, player in ipairs(Players:GetPlayers()) do
+						local leaderstats = player:FindFirstChild("leaderstats")
+						local cash = leaderstats and leaderstats:FindFirstChild("Cash")
+						
+						if cash and cash:IsA("IntValue") then
+							cash.Value = cash.Value +healthLost
+						else
+							warn("Cash IntValue missing for " .. player.Name)
+						end
+					end
+				end
 			end
 		end
 		task.wait(fr.Value)
+		
 	end
 end
 
