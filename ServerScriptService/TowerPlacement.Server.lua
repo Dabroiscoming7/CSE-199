@@ -73,8 +73,14 @@ requestPlaceTower.OnServerEvent:Connect(function(player, towerName, position)
 	if not isValid(player, position) then return end
 	
 	local tower = template:Clone()
-	tower.Parent = placedFolder
+	tower:SetAttribute("OwnerUserId", player.UserId)
+	
+	if towerName == "BasicTower" then
+		tower:SetAttribute("UpgradeLevel", 1)
+	end
+	
 	tower:PivotTo(CFrame.new(position))
+	tower.Parent = placedFolder
 	
 end)
 
