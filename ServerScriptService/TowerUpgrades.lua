@@ -28,9 +28,9 @@ requestUpgrade.OnServerEvent:Connect(function(player, tower)
 	local range = config and config:FindFirstChild("Range")
 	
 	if not cash or not cash:IsA("IntValue")
-		or not damage or not damage:IsA("IntValue")
-		or not range or not range:IsA("IntValue") then
-		warn("Cash or tower config is missing for " .. player.Name)
+		or not damage or not damage:IsA("NumberValue")
+		or not range or not range:IsA("NumberValue") then
+		warn("Cash or tower configuration is missing for " .. player.Name)
 		return
 	end
 	
